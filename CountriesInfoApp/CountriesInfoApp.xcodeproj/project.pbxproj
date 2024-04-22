@@ -18,7 +18,6 @@
 		A92FD9652BD3F17100843793 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92FD9642BD3F17100843793 /* CountryCell.swift */; };
 		A92FD9672BD3F27200843793 /* labelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92FD9662BD3F27200843793 /* labelExtension.swift */; };
 		A92FD9692BD4112D00843793 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92FD9682BD4112D00843793 /* DetailsViewController.swift */; };
-		A92FD96B2BD417A100843793 /* Flag_of_Georgia 1.png in Resources */ = {isa = PBXBuildFile; fileRef = A92FD96A2BD417A100843793 /* Flag_of_Georgia 1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +34,6 @@
 		A92FD9642BD3F17100843793 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		A92FD9662BD3F27200843793 /* labelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = labelExtension.swift; sourceTree = "<group>"; };
 		A92FD9682BD4112D00843793 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
-		A92FD96A2BD417A100843793 /* Flag_of_Georgia 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flag_of_Georgia 1.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +47,57 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A914D6972BD6C62500521395 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A92FD94A2BD3EAB700843793 /* AppDelegate.swift */,
+				A92FD94C2BD3EAB700843793 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A914D6982BD6C64000521395 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				A92FD95E2BD3EB2D00843793 /* MainVC.swift */,
+				A92FD9682BD4112D00843793 /* DetailsViewController.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		A914D6992BD6C65200521395 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A92FD9622BD3ED3600843793 /* Model.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A914D69A2BD6C66400521395 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A92FD9662BD3F27200843793 /* labelExtension.swift */,
+				A914D6952BD6881E00521395 /* imageViewExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A914D69B2BD6C68000521395 /* CustomCells */ = {
+			isa = PBXGroup;
+			children = (
+				A92FD9642BD3F17100843793 /* CountryCell.swift */,
+			);
+			path = CustomCells;
+			sourceTree = "<group>";
+		};
+		A914D69D2BD6C6B200521395 /* Extras */ = {
+			isa = PBXGroup;
+			children = (
+				A92FD9602BD3EC2200843793 /* NetworkService.swift */,
+			);
+			path = Extras;
+			sourceTree = "<group>";
+		};
 		A92FD93E2BD3EAB700843793 = {
 			isa = PBXGroup;
 			children = (
@@ -68,16 +117,12 @@
 		A92FD9492BD3EAB700843793 /* CountriesInfoApp */ = {
 			isa = PBXGroup;
 			children = (
-				A92FD94A2BD3EAB700843793 /* AppDelegate.swift */,
-				A92FD94C2BD3EAB700843793 /* SceneDelegate.swift */,
-				A92FD95E2BD3EB2D00843793 /* MainVC.swift */,
-				A92FD9642BD3F17100843793 /* CountryCell.swift */,
-				A914D6952BD6881E00521395 /* imageViewExtension.swift */,
-				A92FD9662BD3F27200843793 /* labelExtension.swift */,
-				A92FD9622BD3ED3600843793 /* Model.swift */,
-				A92FD9682BD4112D00843793 /* DetailsViewController.swift */,
-				A92FD96A2BD417A100843793 /* Flag_of_Georgia 1.png */,
-				A92FD9602BD3EC2200843793 /* NetworkService.swift */,
+				A914D69D2BD6C6B200521395 /* Extras */,
+				A914D69B2BD6C68000521395 /* CustomCells */,
+				A914D69A2BD6C66400521395 /* Extensions */,
+				A914D6992BD6C65200521395 /* Models */,
+				A914D6982BD6C64000521395 /* Scene */,
+				A914D6972BD6C62500521395 /* App */,
 				A92FD9532BD3EAB900843793 /* Assets.xcassets */,
 				A92FD9552BD3EAB900843793 /* LaunchScreen.storyboard */,
 				A92FD9582BD3EAB900843793 /* Info.plist */,
@@ -145,7 +190,6 @@
 			files = (
 				A92FD9542BD3EAB900843793 /* Assets.xcassets in Resources */,
 				A92FD9572BD3EAB900843793 /* Base in Resources */,
-				A92FD96B2BD417A100843793 /* Flag_of_Georgia 1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

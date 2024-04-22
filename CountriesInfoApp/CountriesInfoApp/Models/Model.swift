@@ -9,12 +9,14 @@ struct Country: Codable {
     let maps: Maps?
     let capital: [String]?
     let name: Name?
-    //let currencies: [String: Currency]?
+    let startOfWeek: String?
 }
+
 struct Name: Codable {
     let common: String
     let official: String
 }
+
 struct Maps: Codable {
     let googleMaps: String?
     let openStreetMaps: String?

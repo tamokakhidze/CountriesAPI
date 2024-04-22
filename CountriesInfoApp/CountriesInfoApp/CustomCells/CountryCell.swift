@@ -1,50 +1,3 @@
-//import UIKit
-//
-//class CountryCell: UITableViewCell {
-//    
-//    var nameLabel = UILabel()
-//    //var backgroundImageView = UIImageView()
-//    
-//    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-//        super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        addSubview(nameLabel)
-//        configureNameLabel()
-//        contentView.layer.cornerRadius = 37
-//        contentView.clipsToBounds = true
-//        contentView.backgroundColor = .lightGray
-//    }
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-//    func configureNameLabel() {
-//        nameLabel.font = UIFont(name: "FiraGO-Medium", size: 14)
-//        nameLabel.numberOfLines = 0
-//        nameLabel.textAlignment = .center
-//        nameLabel.textColor = .black
-//        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-//        nameLabel.heightAnchor.constraint(equalToConstant: 38).isActive = true
-//        nameLabel.widthAnchor.constraint(equalToConstant: 303).isActive = true
-//        nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-//        nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -34).isActive = true
-//        nameLabel.setLineHeight(16.71)
-//
-//
-//    }
-//    
-//    func configureCell(name: String) {
-//        //nameLabel.text = String(independent)
-//        nameLabel.text = name
-//    }
-//    
-//}
-
-
 import UIKit
 
 class CountryCell: UITableViewCell {
@@ -76,7 +29,6 @@ class CountryCell: UITableViewCell {
         flagImageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
         flagImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         flagImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25).isActive = true
-        flagImageView.backgroundColor = .red
         flagImageView.layer.cornerRadius = 3
         flagImageView.clipsToBounds = true
     }
@@ -91,7 +43,6 @@ class CountryCell: UITableViewCell {
         nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         nameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 220).isActive = true
         nameLabel.trailingAnchor.constraint(equalTo: nextButton.leadingAnchor, constant: -1).isActive = true
-        nameLabel.backgroundColor = .yellow
     }
     
     func configureTitleLabel() {

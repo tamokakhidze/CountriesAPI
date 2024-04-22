@@ -1,10 +1,3 @@
-//
-//  DetailsViewController.swift
-//  CountriesInfoApp
-//
-//  Created by Tamuna Kakhidze on 20.04.24.
-//
-
 import UIKit
 
 class DetailsViewController: UIViewController {
@@ -16,11 +9,14 @@ class DetailsViewController: UIViewController {
     var flagAlt: String?
     var capital: [String]?
     var name: String
-    //var currency: [String : Currency]?
+    var streetMapLink: URL?
+    var googleLink: URL?
+    var startOfWeek: String?
+    var flagUrl: String
+    var flagImage = UIImageView()
     var mainScrollView = UIScrollView()
     var contentView = UIView()
     var countryName = UILabel()
-    var flagImage = UIImageView()
     var aboutheflag = UILabel()
     var flagDescriopion = UILabel()
     var divider1 = UIView()
@@ -31,31 +27,41 @@ class DetailsViewController: UIViewController {
     var spellingTextLabel = UILabel()
     var capitalLabel = UILabel()
     var capitalTextLabel = UILabel()
-    var currencyLabel = UILabel()
-    var currencyTextLabel = UILabel()
+    var startOfWeekLabel = UILabel()
+    var startOfWeekTextLabel = UILabel()
     var regionLabel = UILabel()
     var regionTextLabel = UILabel()
     var neighborsLabel = UILabel()
     var neighborsTextLabel = UILabel()
     var divider2 = UIView()
-    var emptyview = UIView()
-
+    var usefulLinks = UILabel()
+    var mapsStack = UIStackView()
+    var map1 = UIImageView()
+    var map2 = UIImageView()
+    var imageToURLMap: [UIImageView: URL] = [:]
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        title = name
+        navigationController?.navigationBar.prefersLargeTitles = true
         
+        setupTapGestureRecognizer(for: map1, with: streetMapLink)
+        setupTapGestureRecognizer(for: map2, with: googleLink)
     }
     
-    init(region: String? = nil, independent: Bool? = nil, borders: [String]? = nil, altspellings: String? = nil, flagAlt: String? = nil, flagImage: UIImageView? = nil, name: String) {
+    init(region: String? = nil, independent: Bool? = nil, borders: [String]? = nil, altspellings: String? = nil, flagAlt: String? = nil, name: String, streetMapLink: URL? = nil, googleLink: URL? = nil, startOfWeek: String? = nil, flagUrl: String) {
         self.name = name
         self.region = region
         self.independent = independent
-        //currency: [String : Currency] = [:]
         self.borders = borders
         self.altspellings = altspellings
         self.flagAlt = flagAlt
-        self.flagImage = flagImage ?? UIImageView()
-       // self.currency = currency
+        self.streetMapLink = streetMapLink
+        self.googleLink = googleLink
+        self.startOfWeek = startOfWeek
+        self.flagUrl = flagUrl
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -64,37 +70,40 @@ class DetailsViewController: UIViewController {
     }
     
     func setupUI() {
-//        mainScrollView = configureScrollView()
-//        contentView = configureContentView()
-//        mainScrollView.addSubview(contentView)
-        countryName = configureCountryNameLabel()
+        mainScrollView = configureScrollView()
+        contentView = configureContentView()
         flagImage = configureFlagImageView()
-        aboutheflag = aboutTheFlagLabel()
-        flagDescriopion = flagDescriptionLabel(descriptionText: flagAlt ?? "This flag does not have description")
+        let flagURL = URL(string: flagUrl)
+        flagImage.setImage(with: flagURL!)
+        
+        
+        aboutheflag = infoLabel(topAnchor: flagImage.bottomAnchor, constant: 25, text: "About the flag")
+        flagDescriopion = flagDescriptionLabel(descriptionText: flagAlt ?? "This flag does not have a description")
         divider1 = createDividerView(topAnchor: flagDescriopion.bottomAnchor, constant: 20)
-        basicInfo = basicInfoLabel()
+        basicInfo = infoLabel(topAnchor: divider1.bottomAnchor, constant: 24, text: "Basic information")
         independentLabel = createSomeInfoLabel(topAnchor: basicInfo.bottomAnchor, constant: 15, text: "Independent:")
         independentTextLabel = createSomeInfoLabelTextLabels(topAnchor: basicInfo.bottomAnchor, constant: 15, text: String((independent) ?? false).uppercased())
         spellingLabel = createSomeInfoLabel(topAnchor: independentLabel.bottomAnchor, constant: 15, text: "Spelling:")
         spellingTextLabel = createSomeInfoLabelTextLabels(topAnchor: independentTextLabel.bottomAnchor, constant: 15, text: altspellings ?? "None")
         capitalLabel = createSomeInfoLabel(topAnchor: spellingLabel.bottomAnchor, constant: 15, text: "Capital")
         capitalTextLabel = createSomeInfoLabelTextLabels(topAnchor: spellingTextLabel.bottomAnchor, constant: 15, text: capital?[0] ?? "Capital")
-        currencyLabel = createSomeInfoLabel(topAnchor: capitalLabel.bottomAnchor, constant: 15, text: "Currency:")
-       // let currencyValuesString = currency?.values.map { $0.name }.joined(separator: ", ") ?? ""
-        currencyTextLabel = createSomeInfoLabelTextLabels(topAnchor: capitalTextLabel.bottomAnchor, constant: 15, text: "EU")
-        regionLabel = createSomeInfoLabel(topAnchor: currencyLabel.bottomAnchor, constant: 15, text: "Region:")
-        regionTextLabel = createSomeInfoLabelTextLabels(topAnchor: currencyTextLabel.bottomAnchor, constant: 15, text: region ?? "Earth")
+        startOfWeekLabel = createSomeInfoLabel(topAnchor: capitalLabel.bottomAnchor, constant: 15, text: "Start of week:")
+        startOfWeekTextLabel = createSomeInfoLabelTextLabels(topAnchor: capitalTextLabel.bottomAnchor, constant: 15, text: startOfWeek ?? "Monday")
+        regionLabel = createSomeInfoLabel(topAnchor: startOfWeekLabel.bottomAnchor, constant: 15, text: "Region:")
+        regionTextLabel = createSomeInfoLabelTextLabels(topAnchor: startOfWeekTextLabel.bottomAnchor, constant: 15, text: region ?? "Earth")
         neighborsLabel = createSomeInfoLabel(topAnchor: regionLabel.bottomAnchor, constant: 15, text: "Neighbors:")
         neighborsTextLabel = createSomeInfoLabelTextLabels(topAnchor: regionTextLabel.bottomAnchor, constant: 15, text: borders?.joined(separator: ", ") ?? "None")
         divider2 = createDividerView(topAnchor: neighborsLabel.bottomAnchor, constant: 20)
-        view.backgroundColor = .white
-        
-//        let totalHeight = calculateTotalHeight()
-//        mainScrollView.contentSize = CGSize(width: view.frame.width, height: totalHeight)
+        usefulLinks = infoLabel(topAnchor: divider2.bottomAnchor, constant: 24, text: "Useful links")
+        mapsStack = configureMapsStackView()
+        map1 = configureMap(image: UIImage(named:"streetmap")!)
+        map2 = configureMap(image: UIImage(named: "google")!)
         
     }
+    
     func configureScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
+        scrollView.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -107,46 +116,25 @@ class DetailsViewController: UIViewController {
     
     func configureContentView() -> UIView {
         let contentView = UIView()
+        mainScrollView.addSubview(contentView)
+        contentView.backgroundColor = .white
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.topAnchor.constraint(equalTo: mainScrollView.topAnchor).isActive = true
         contentView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: mainScrollView.bottomAnchor).isActive = true
         contentView.widthAnchor.constraint(equalTo: mainScrollView.widthAnchor).isActive = true
+        contentView.heightAnchor.constraint(equalTo: mainScrollView.heightAnchor, multiplier: 1).isActive = true
         
         return contentView
-        
     }
-    
-//    func calculateTotalHeight() -> CGFloat {
-//        var totalHeight: CGFloat = 0
-//        for subview in mainScrollView.subviews {
-//            totalHeight += subview.frame.size.height
-//        }
-//        return totalHeight
-//    }
-    
-    
-//    func s() -> UIView {
-//        let uiview = UIView()
-//        //mainScrollView.addSubview(uiview)
-//        view.addSubview(uiview)
-//        uiview.translatesAutoresizingMaskIntoConstraints = false
-//        uiview.heightAnchor.constraint(equalToConstant: 300).isActive = true
-//        uiview.topAnchor.constraint(equalTo: divider2.bottomAnchor, constant: 30).isActive = true
-//        return uiview
-//    }
-    
-
-    
     
     func configureCountryNameLabel() -> UILabel {
         let countryNameLabel = UILabel()
-        //mainScrollView.addSubview(countryNameLabel)
-        view.addSubview(countryNameLabel)
+        contentView.addSubview(countryNameLabel)
         countryNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        countryNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 48).isActive = true
-        countryNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        countryNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 48).isActive = true
+        countryNameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         countryNameLabel.widthAnchor.constraint(equalToConstant: 343).isActive = true
         countryNameLabel.textAlignment = .center
         countryNameLabel.font.withSize(17)
@@ -156,102 +144,123 @@ class DetailsViewController: UIViewController {
     
     func configureFlagImageView() -> UIImageView {
         let flagImageView = UIImageView()
-        //mainScrollView.addSubview(flagImageView)
-        view.addSubview(flagImageView)
+        contentView.addSubview(flagImageView)
         flagImageView.translatesAutoresizingMaskIntoConstraints = false
         flagImageView.widthAnchor.constraint(equalToConstant: 343).isActive = true
         flagImageView.heightAnchor.constraint(equalToConstant: 228).isActive = true
         flagImageView.layer.cornerRadius = 30
         flagImageView.clipsToBounds = true
-        flagImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        flagImageView.topAnchor.constraint(equalTo: countryName.bottomAnchor, constant: 29).isActive = true
+        flagImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        flagImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30).isActive = true
         
         return flagImageView
     }
     
-    func aboutTheFlagLabel() -> UILabel {
-        let label = UILabel()
-        //mainScrollView.addSubview(label)
-        view.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.topAnchor.constraint(equalTo: flagImage.bottomAnchor, constant: 25).isActive = true
-        label.widthAnchor.constraint(equalToConstant: 325).isActive = true
-        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        label.textAlignment = .left
-        label.text = "About the flag"
-        
-        return label
-    }
-    
     func flagDescriptionLabel(descriptionText: String?) -> UILabel {
         let description = UILabel()
-        //mainScrollView.addSubview(description)
-        view.addSubview(description)
+        contentView.addSubview(description)
         description.translatesAutoresizingMaskIntoConstraints = false
         description.topAnchor.constraint(equalTo: aboutheflag.bottomAnchor, constant: 15).isActive = true
         description.widthAnchor.constraint(equalToConstant: 325).isActive = true
         description.heightAnchor.constraint(equalToConstant: 85).isActive = true
-        description.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        description.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         description.numberOfLines = 0
         description.textAlignment = .left
         description.text = descriptionText
-        
         return description
     }
     
     func createDividerView(topAnchor: NSLayoutYAxisAnchor, constant: CGFloat) -> UIView {
         let divider = UIView()
-        //mainScrollView.addSubview(divider)
-        view.addSubview(divider)
+        contentView.addSubview(divider)
         divider.translatesAutoresizingMaskIntoConstraints = false
         divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
         divider.widthAnchor.constraint(equalToConstant: 312).isActive = true
         divider.topAnchor.constraint(equalTo: topAnchor, constant: constant).isActive = true
-        divider.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        divider.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         divider.backgroundColor = .lightGray
-        
         return divider
     }
     
-    func basicInfoLabel() -> UILabel {
+    func infoLabel(topAnchor: NSLayoutYAxisAnchor, constant: CGFloat, text: String) -> UILabel {
         let label = UILabel()
-        //mainScrollView.addSubview(label)
-        view.addSubview(label)
+        contentView.addSubview(label)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.topAnchor.constraint(equalTo: divider1.bottomAnchor, constant: 24).isActive = true
+        label.topAnchor.constraint(equalTo: topAnchor, constant: constant).isActive = true
         label.widthAnchor.constraint(equalToConstant: 325).isActive = true
-        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         label.textAlignment = .left
-        label.text = "Basic information"
-        
+        label.text = text
         return label
     }
     
     func createSomeInfoLabel(topAnchor: NSLayoutYAxisAnchor, constant: CGFloat, text: String) -> UILabel {
         let label = UILabel()
-        //mainScrollView.addSubview(label)
-        view.addSubview(label)
+        contentView.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33).isActive = true
+        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 33).isActive = true
         label.topAnchor.constraint(equalTo: topAnchor, constant: constant).isActive = true
         label.text = text
-        
         return label
     }
     
     func createSomeInfoLabelTextLabels(topAnchor: NSLayoutYAxisAnchor, constant: CGFloat, text: String = "") -> UILabel {
         let label = UILabel()
-        //mainScrollView.addSubview(label)
-        view.addSubview(label)
+        contentView.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33).isActive = true
+        label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -33).isActive = true
         label.topAnchor.constraint(equalTo: topAnchor, constant: constant).isActive = true
         label.text = text
         label.numberOfLines = 0
-        
         return label
     }
     
-
+    func configureMapsStackView() -> UIStackView {
+        let mapsStackView = UIStackView()
+        contentView.addSubview(mapsStackView)
+        mapsStackView.translatesAutoresizingMaskIntoConstraints = false
+        mapsStackView.widthAnchor.constraint(equalToConstant: 187).isActive = true
+        mapsStackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        mapsStackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        mapsStackView.topAnchor.constraint(equalTo: usefulLinks.bottomAnchor, constant: 15).isActive = true
+        mapsStackView.distribution = .equalCentering
+        
+        return mapsStackView
+    }
+    
+    func configureMap(image: UIImage) -> UIImageView {
+        let map = UIImageView()
+        mapsStack.addArrangedSubview(map)
+        map.translatesAutoresizingMaskIntoConstraints = false
+        map.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        map.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        map.layer.borderWidth = 1
+        map.layer.borderColor = UIColor.black.cgColor
+        map.layer.cornerRadius = 25
+        map.contentMode = .center
+        map.image = image
+        
+        return map
+    }
+    
+    func setupTapGestureRecognizer(for imageView: UIImageView, with url: URL?) {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGesture)
+        
+        if let url = url {
+            imageToURLMap[imageView] = url
+        }
+    }
+    
+    @objc func imageTapped(_ gesture: UITapGestureRecognizer) {
+        guard let imageView = gesture.view as? UIImageView else {
+            return
+        }
+        
+        if let url = imageToURLMap[imageView] {
+            UIApplication.shared.open(url)
+        }
+    }
 }
-

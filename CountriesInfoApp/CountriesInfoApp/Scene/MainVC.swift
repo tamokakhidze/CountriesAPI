@@ -87,8 +87,10 @@ extension MainVC: UITableViewDelegate {
         let name = (countryItem.name?.official)!
         let independent = countryItem.independent
         let capital = countryItem.capital
-        let flagUrl = URL(string: countryItem.flags!.png)
-        //let currency = countryItem.currencies
+        let flagUrl = countryItem.flags!.png
+        let streetLink = URL(string: countryItem.maps?.openStreetMaps ?? "")
+        let googleLink = URL(string: countryItem.maps?.googleMaps ?? "")
+        let startOfWeek = countryItem.startOfWeek
 
         if let altSpellings = countryItem.altSpellings, altSpellings.indices.contains(1) {
             alt = altSpellings[1]
@@ -100,15 +102,16 @@ extension MainVC: UITableViewDelegate {
         
 
         if countriesArray.firstIndex(where: { $0.altSpellings?[0] == countryItem.altSpellings?[0] }) != nil {
-            let detailsVC = DetailsViewController(name: name)
+            let detailsVC = DetailsViewController(name: name, flagUrl: flagUrl)
             detailsVC.region = region
             detailsVC.borders = bordersFive
             detailsVC.altspellings = alt
             detailsVC.flagAlt = flagAlt
             detailsVC.independent = independent
             detailsVC.capital = capital
-            detailsVC.flagImage.setImage(with: flagUrl!)
-            //detailsVC.currency = currency
+            detailsVC.streetMapLink = streetLink
+            detailsVC.googleLink = googleLink
+            detailsVC.startOfWeek = startOfWeek
             navigationController?.pushViewController(detailsVC, animated: true)
             }
         }
@@ -125,6 +128,4 @@ extension MainVC: UITableViewDelegate {
 
 }
 
-#Preview {
-    MainVC()
-}
+
